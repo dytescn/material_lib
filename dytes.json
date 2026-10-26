@@ -1,0 +1,14 @@
+{
+  "name": "material_lib",
+  "version": "1.0.1",
+  "description": "material database capability",
+  "keywords": ["material", "database", "sys"],
+  "author": "funxdata",
+  "type": "sys",
+  "license": "MIT",
+  "platform-exports": {
+    "windows": {
+      "./target/release/material_lib.dll": "material_lib.dll"
+    }
+  }
+}
