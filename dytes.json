@@ -1,7 +1,7 @@
 {
   "name": "material_lib",
   "uuid": "3a3bea1e-e3cb-4765-b0e6-b8d2333bb375",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "material database capability",
   "keywords": ["material", "database", "sys"],
   "author": "funxdata",
@@ -10,6 +10,14 @@
   "platform-exports": {
     "windows": {
       "./target/release/material_lib.dll": "material_lib.dll",
+      "./docs/mcp.md": "mcp.md"
+    },
+    "linux": {
+      "./target/release/libmaterial_lib.so": "material_lib.so",
+      "./docs/mcp.md": "mcp.md"
+    },
+    "macos": {
+      "./target/release/libmaterial_lib.dylib": "material_lib.dylib",
       "./docs/mcp.md": "mcp.md"
     }
   }

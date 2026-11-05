@@ -10,8 +10,10 @@ const OUT_BUF_SIZE: usize = 65536;
 
 #[cfg(windows)]
 const DATABASE_LIB: &str = "./libary/database.dll";
-#[cfg(not(windows))]
-const DATABASE_LIB: &str = "./libary/database.dll";
+#[cfg(target_os = "linux")]
+const DATABASE_LIB: &str = "./libary/database.so";
+#[cfg(target_os = "macos")]
+const DATABASE_LIB: &str = "./libary/database.dylib";
 
 type FfiFn = unsafe extern "C" fn(*const c_char, *mut c_char) -> c_int;
 

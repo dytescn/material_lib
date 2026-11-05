@@ -3,7 +3,12 @@ use serde_json::{json, Value};
 use std::ffi::{c_char, c_int, CStr, CString};
 use std::sync::OnceLock;
 
+#[cfg(windows)]
 const CHATLLM_LIB: &str = "./libary/chatllm.dll";
+#[cfg(target_os = "linux")]
+const CHATLLM_LIB: &str = "./libary/chatllm.so";
+#[cfg(target_os = "macos")]
+const CHATLLM_LIB: &str = "./libary/chatllm.dylib";
 const OUT_BUF_SIZE: usize = 65536;
 
 type FfiFn = unsafe extern "C" fn(*const c_char, *mut c_char) -> c_int;
