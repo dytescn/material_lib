@@ -66,6 +66,9 @@ fn map_error(msg: &str) -> (i32, String) {
     if msg.contains("UNIQUE constraint failed") {
         return (409100, msg.to_string());
     }
+    if msg.contains("no such table") {
+        return (500201, format!("NEED_SETUP: {msg}"));
+    }
     (500101, msg.to_string())
 }
 
@@ -142,4 +145,17 @@ pub fn get_i64(obj: &Value, key: &str) -> i64 {
 
 pub fn get_opt_string(obj: &Value, key: &str) -> Option<String> {
     obj.get(key).and_then(Value::as_str).map(str::to_string)
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn missing_table_maps_to_need_setup() {
+        let (code, msg) = map_error("no such table: material_file");
+        assert_eq!(code, 500201);
+        assert!(msg.starts_with("NEED_SETUP:"));
+    }
 }

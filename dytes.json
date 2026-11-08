@@ -1,9 +1,13 @@
 {
   "name": "material_lib",
   "uuid": "3a3bea1e-e3cb-4765-b0e6-b8d2333bb375",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "material database capability",
-  "keywords": ["material", "database", "sys"],
+  "keywords": [
+    "material",
+    "database",
+    "sys"
+  ],
   "author": "funxdata",
   "type": "sys",
   "license": "MIT",
