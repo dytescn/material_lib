@@ -88,6 +88,34 @@ jobs:
           cmake --build build --config Release
 
       - name: Publish with dytes
-        uses: dytescn/dytes@v0.1.12
-        with:
-          command: publish
+        shell: bash
+        env:
+          DYTES_VERSION: "0.1.20"
+        run: |
+          set -euo pipefail
+          case "${{ runner.os }}" in
+            Windows) asset="dytes-windows.exe"; bin="dytes.exe"; platform="windows/dytes.exe" ;;
+            Linux)   asset="dytes-linux";       bin="dytes";       platform="linux/dytes" ;;
+            macOS)   asset="dytes-macos";       bin="dytes";       platform="macos/dytes" ;;
+            *) echo "unsupported runner: ${{ runner.os }}" >&2; exit 1 ;;
+          esac
+          bin_dir="${RUNNER_TEMP}/dytes-bin"
+          mkdir -p "${bin_dir}"
+          github_url="https://github.com/dytescn/dytes/releases/download/v${DYTES_VERSION}/${asset}"
+          cdn_url="https://packages.funxdata.com/core/dytes/${DYTES_VERSION}/${platform}"
+          downloaded=0
+          for i in $(seq 1 12); do
+            if curl -fsSL --retry 2 --retry-all-errors --retry-delay 5 "${github_url}" -o "${bin_dir}/${bin}"; then
+              downloaded=1
+              break
+            fi
+            echo "GitHub 下载失败（第 ${i} 次），重试..."
+            sleep 8
+          done
+          if [ "${downloaded}" -eq 0 ]; then
+            echo "GitHub 下载失败，改用 packages CDN"
+            curl -fsSL --retry 5 --retry-all-errors --retry-delay 5 "${cdn_url}" -o "${bin_dir}/${bin}"
+          fi
+          chmod +x "${bin_dir}/${bin}" 2>/dev/null || true
+          "${bin_dir}/${bin}" --version
+          "${bin_dir}/${bin}" publish
