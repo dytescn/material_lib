@@ -84,7 +84,7 @@ dependencies = [
 
 [[package]]
 name = "material_lib"
-version = "1.0.3"
+version = "1.0.4"
 dependencies = [
  "libloading",
  "serde",
